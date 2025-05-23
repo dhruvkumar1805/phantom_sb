@@ -1,3 +1,6 @@
-*.json
+config.json
+ltc_addresses.json
+upi_addresses.json
+autoresponses.json
 node_modules/
 *.log
