@@ -62,14 +62,14 @@ module.exports = async function cryptoModule(client) {
 
         if (command === 'addy') {
             if (!ltcAddresses.length) return message.reply('🚫 **No LTC addresses saved.**');
-            message.reply('📋 **Select an address to copy:**\n' + ltcAddresses.map((a, i) => `\`${i + 1}.\` \`${a}\``).join('\n'));
+            message.reply('📋 **Select an address to copy:**\n\n' + ltcAddresses.map((a, i) => `${i + 1}.\ \`${a}\``).join('\n'));
 
             const filter = m => m.author.id === message.author.id && !isNaN(m.content);
             const collected = await message.channel.awaitMessages({ filter, max: 1, time: 30000 });
             if (!collected.size) return message.reply('⏱️ **Timeout. Please try again.**');
             const index = parseInt(collected.first().content) - 1;
             if (index >= 0 && index < ltcAddresses.length) {
-                message.reply(`📎 **Copied Address:**\n\`${ltcAddresses[index]}\``);
+                message.reply(`📋 **Click to copy the address:**\n\n\`${ltcAddresses[index]}\``);
             } else {
                 message.reply('❌ **Invalid index selected.**');
             }
@@ -168,12 +168,12 @@ module.exports = async function cryptoModule(client) {
                 if (res.status === 200) {
                     const txId = res.data.txId || 'N/A';
                     loading.edit(
-                        `✅ **Sent:** \`$${amountUsd.toFixed(2)}\`\n📤 **Amount:** \`${amountLtc} LTC\` — \`$${(amountLtc * ltcPrice).toFixed(2)} USD\`\n` +
-                        `🔗 **Transaction Hash:** [Click to View](https://blockchair.com/litecoin/transaction/${txId})\n` +
+                        `✅ **Transaction Sent!**\n\n` +
+                        `💰 **Amount:** $${amountUsd.toFixed(2)}  |  \`${amountLtc} LTC\`\n` +
+                        `🔗 **TX Hash:** [View](https://live.blockcypher.com/ltc/tx/${txId})\n\n` +
                         `📤 **From:** \`${config.LTC_FROM_ADDRESS}\`\n` +
-                        `📥 **To:** \`${toAddress}\`\n` +
-                        `💸 **Fee:** \`0.00005 LTC\`\n\n` +
-                        `🕒 *Transaction initiated by ${message.author.username} at ${new Date().toLocaleTimeString()}*`
+                        `📥 **To:** \`${toAddress}\`\n\n` +
+                        `🕒 *Sent by* \`${message.author.username}\` *at* \`${new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })} IST\``
                     );
 
                 } else {
